@@ -28,4 +28,7 @@ public interface GamerRepository extends JpaRepository<Gamer, Long> {
 
 	@Query("SELECT COUNT(g) FROM Gamer g WHERE g.age >= :age")
 	Long countGamersByAgeGreaterThanEqual(@Param("age") int age);
+
+	// New method using HCQL
+	List<Gamer> findGamersByAgeAndUsername(int age, String username);
 }

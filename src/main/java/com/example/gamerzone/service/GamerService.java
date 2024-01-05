@@ -88,4 +88,9 @@ public class GamerService {
 		query.setParameter("username", username);
 		return (Gamer) query.getSingleResult();
 	}
+
+	// New method using HCQL
+	public List<Gamer> findGamersByAgeAndUsername(int age, String username) {
+		return gamerRepository.findGamersByAgeAndUsername(age, username);
+	}
 }

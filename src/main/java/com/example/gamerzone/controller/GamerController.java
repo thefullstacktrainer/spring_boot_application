@@ -102,4 +102,12 @@ public class GamerController {
 		Gamer gamer = gamerService.findByUsername(username);
 		return ResponseEntity.ok(gamer);
 	}
+
+	// New endpoint using HCQL
+	@GetMapping("/by-age-and-username")
+	public ResponseEntity<List<Gamer>> findGamersByAgeAndUsername(@RequestParam int age,
+			@RequestParam String username) {
+		List<Gamer> gamers = gamerService.findGamersByAgeAndUsername(age, username);
+		return ResponseEntity.ok(gamers);
+	}
 }
