@@ -27,3 +27,4 @@ replay_pid*
 .mvn/wrapper/maven-wrapper.properties
 .settings/*
 target/*
+.vscode/*
