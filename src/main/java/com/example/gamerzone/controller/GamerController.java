@@ -48,4 +48,10 @@ public class GamerController {
         gamerService.deleteGamer(id);
         return ResponseEntity.ok().build();
     }
+    
+    @GetMapping("/by-age/{age}")
+    public ResponseEntity<List<Gamer>> getGamersByAge(@PathVariable int age) {
+        List<Gamer> gamers = gamerService.getGamersByAge(age);
+        return ResponseEntity.ok(gamers);
+    }
 }

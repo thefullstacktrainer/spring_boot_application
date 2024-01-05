@@ -38,4 +38,8 @@ public class GamerService {
     public void deleteGamer(Long id) {
         gamerRepository.deleteById(id);
     }
+    
+    public List<Gamer> getGamersByAge(int age) {
+        return gamerRepository.findByAge(age);
+    }
 }
