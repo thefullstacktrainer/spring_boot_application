@@ -2,7 +2,7 @@
 package com.example.gamerzone.controller;
 
 import com.example.gamerzone.model.Gamer;
-import com.example.gamerzone.repository.GamerRepository;
+import com.example.gamerzone.service.GamerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,42 +14,38 @@ import java.util.List;
 public class GamerController {
 
     @Autowired
-    private GamerRepository gamerRepository;
+    private GamerService gamerService;
 
     @GetMapping
     public List<Gamer> getAllGamers() {
-        return gamerRepository.findAll();
+        return gamerService.getAllGamers();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Gamer> getGamerById(@PathVariable Long id) {
-        return gamerRepository.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Gamer gamer = gamerService.getGamerById(id);
+        if (gamer != null) {
+            return ResponseEntity.ok(gamer);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping
     public ResponseEntity<Void> createGamer(@RequestBody Gamer gamer) {
-        gamerRepository.save(gamer);
+        gamerService.createGamer(gamer);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateGamer(@PathVariable Long id, @RequestBody Gamer updatedGamer) {
-        return gamerRepository.findById(id)
-                .map(existingGamer -> {
-                    existingGamer.setUsername(updatedGamer.getUsername());
-                    existingGamer.setEmail(updatedGamer.getEmail());
-                    existingGamer.setAge(updatedGamer.getAge());
-                    gamerRepository.save(existingGamer);
-                    return ResponseEntity.ok().<Void>build();
-                })
-                .orElse(ResponseEntity.notFound().build());
+        gamerService.updateGamer(id, updatedGamer);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteGamer(@PathVariable Long id) {
-        gamerRepository.deleteById(id);
+        gamerService.deleteGamer(id);
         return ResponseEntity.ok().build();
     }
 }
