@@ -40,11 +40,18 @@
 			<scope>test</scope>
 		</dependency>
 		<!-- H2 Database (In-memory) -->
-		<dependency>
+		<!-- 	<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
+		</dependency> -->
+		<!-- Add MySQL Connector dependency -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.11</version> <!-- Use the latest version available -->
 		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -52,6 +59,14 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.22.2</version>
+				<configuration>
+					<!-- Any specific configuration for the Surefire Plugin -->
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
