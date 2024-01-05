@@ -23,12 +23,9 @@ public class GameController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Game> getGameById(@PathVariable Long id) {
-        Game game = gameRepository.findById(id);
-        if (game != null) {
-            return ResponseEntity.ok(game);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return gameRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
@@ -39,13 +36,20 @@ public class GameController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateGame(@PathVariable Long id, @RequestBody Game updatedGame) {
-        gameRepository.update(updatedGame);
-        return ResponseEntity.ok().build();
+        return gameRepository.findById(id)
+                .map(existingGame -> {
+                    existingGame.setTitle(updatedGame.getTitle());
+                    existingGame.setGenre(updatedGame.getGenre());
+                    existingGame.setReleaseYear(updatedGame.getReleaseYear());
+                    gameRepository.save(existingGame);
+                    return ResponseEntity.ok().<Void>build();
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteGame(@PathVariable Long id) {
-        gameRepository.delete(id);
+        gameRepository.deleteById(id);
         return ResponseEntity.ok().build();
     }
 }
