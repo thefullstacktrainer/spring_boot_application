@@ -16,4 +16,16 @@ public interface GamerRepository extends JpaRepository<Gamer, Long> {
 
 	@Query("FROM Gamer WHERE age = :age")
 	List<Gamer> findByAge(@Param("age") int age);
+
+	@Query("SELECT g.username FROM Gamer g WHERE g.age > :age")
+	List<String> findUsernamesByAgeGreaterThan(@Param("age") int age);
+
+	@Query("FROM Gamer WHERE username LIKE %:username%")
+	List<Gamer> findByUsernameContaining(@Param("username") String username);
+
+	@Query("SELECT AVG(g.age) FROM Gamer g")
+	Double getAverageAge();
+
+	@Query("SELECT COUNT(g) FROM Gamer g WHERE g.age >= :age")
+	Long countGamersByAgeGreaterThanEqual(@Param("age") int age);
 }
