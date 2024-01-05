@@ -78,4 +78,28 @@ public class GamerController {
 		Long count = gamerService.countGamersByAgeGreaterThanEqual(age);
 		return ResponseEntity.ok(count);
 	}
+
+	@GetMapping("/increase-age/{maxAge}")
+	public ResponseEntity<String> increaseAgeForGamersBelowMaxAge(@PathVariable int maxAge) {
+		int updatedRecords = gamerService.increaseAgeForGamersBelowMaxAge(maxAge);
+		return ResponseEntity.ok(updatedRecords + " records updated.");
+	}
+
+	@GetMapping("/by-age-with-sorting/{minAge}")
+	public ResponseEntity<List<Gamer>> findGamersByAgeWithSorting(@PathVariable int minAge) {
+		List<Gamer> gamers = gamerService.findGamersByAgeWithSorting(minAge);
+		return ResponseEntity.ok(gamers);
+	}
+
+	@GetMapping("/usernames-by-age/{age}")
+	public ResponseEntity<List<String>> findUsernamesByAge(@PathVariable int age) {
+		List<String> usernames = gamerService.findUsernamesByAge(age);
+		return ResponseEntity.ok(usernames);
+	}
+
+	@GetMapping("/by-username/{username}")
+	public ResponseEntity<Gamer> findByUsername(@PathVariable String username) {
+		Gamer gamer = gamerService.findByUsername(username);
+		return ResponseEntity.ok(gamer);
+	}
 }
