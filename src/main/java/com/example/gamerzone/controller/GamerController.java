@@ -110,4 +110,12 @@ public class GamerController {
 		List<Gamer> gamers = gamerService.findGamersByAgeAndUsername(age, username);
 		return ResponseEntity.ok(gamers);
 	}
+	
+	@GetMapping("/with-complex-criteria")
+    public ResponseEntity<List<Gamer>> findGamersWithComplexCriteria(
+            @RequestParam int age,
+            @RequestParam String username) {
+        List<Gamer> gamers = gamerService.findGamersWithComplexCriteria(age, username);
+        return ResponseEntity.ok(gamers);
+    }
 }

@@ -31,4 +31,6 @@ public interface GamerRepository extends JpaRepository<Gamer, Long> {
 
 	// New method using HCQL
 	List<Gamer> findGamersByAgeAndUsername(int age, String username);
+	
+	List<Gamer> findGamersWithComplexCriteria(int age, String username);
 }

@@ -93,4 +93,8 @@ public class GamerService {
 	public List<Gamer> findGamersByAgeAndUsername(int age, String username) {
 		return gamerRepository.findGamersByAgeAndUsername(age, username);
 	}
+	
+	public List<Gamer> findGamersWithComplexCriteria(int age, String username) {
+        return gamerRepository.findGamersWithComplexCriteria(age, username);
+    }
 }
