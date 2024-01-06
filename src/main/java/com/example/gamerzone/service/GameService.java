@@ -9,8 +9,13 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import org.springframework.cache.annotation.Cacheable;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Service
 public class GameService {
+
+	private final Logger logger = LoggerFactory.getLogger(GameService.class);
 
 	@Autowired
 	private GameRepository gameRepository;
@@ -43,6 +48,7 @@ public class GameService {
 	// Named query methods
 	@Cacheable("gamesByTitleCache")
 	public List<Game> findGamesByTitle(String title) {
+		logger.info("Executing findGamesByTitle for title: {}", title);
 		return gameRepository.findGamesByTitle(title);
 	}
 

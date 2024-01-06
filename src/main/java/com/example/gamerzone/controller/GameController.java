@@ -3,6 +3,9 @@ package com.example.gamerzone.controller;
 
 import com.example.gamerzone.model.Game;
 import com.example.gamerzone.service.GameService;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +15,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/games")
 public class GameController {
+
+	private final Logger logger = LoggerFactory.getLogger(GameService.class);
 
 	@Autowired
 	private GameService gameService;
@@ -53,6 +58,7 @@ public class GameController {
 	@GetMapping("/by-title/{title}")
 	public ResponseEntity<List<Game>> findGamesByTitle(@PathVariable String title) {
 		List<Game> games = gameService.findGamesByTitle(title);
+		logger.info("Executing gameService.findGamesByTitle for title: {}", title);
 		return ResponseEntity.ok(games);
 	}
 
