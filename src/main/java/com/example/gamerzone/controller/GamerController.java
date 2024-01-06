@@ -110,12 +110,23 @@ public class GamerController {
 		List<Gamer> gamers = gamerService.findGamersByAgeAndUsername(age, username);
 		return ResponseEntity.ok(gamers);
 	}
-	
+
 	@GetMapping("/with-complex-criteria")
-    public ResponseEntity<List<Gamer>> findGamersWithComplexCriteria(
-            @RequestParam int age,
-            @RequestParam String username) {
-        List<Gamer> gamers = gamerService.findGamersWithComplexCriteria(age, username);
+	public ResponseEntity<List<Gamer>> findGamersWithComplexCriteria(@RequestParam int age,
+			@RequestParam String username) {
+		List<Gamer> gamers = gamerService.findGamersWithComplexCriteria(age, username);
+		return ResponseEntity.ok(gamers);
+	}
+
+	@GetMapping("/custom-criteria")
+    public ResponseEntity<List<Gamer>> findGamersWithCustomCriteria(
+            @RequestParam(required = false) Integer age,
+            @RequestParam(required = false) String username,
+            @RequestParam(defaultValue = "username") String orderBy,
+            @RequestParam(defaultValue = "asc") String orderDirection,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        List<Gamer> gamers = gamerService.findGamersWithCustomCriteria(age, username, orderBy, orderDirection, page, size);
         return ResponseEntity.ok(gamers);
     }
 }

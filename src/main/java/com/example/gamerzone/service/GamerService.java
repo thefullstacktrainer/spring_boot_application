@@ -93,8 +93,14 @@ public class GamerService {
 	public List<Gamer> findGamersByAgeAndUsername(int age, String username) {
 		return gamerRepository.findGamersByAgeAndUsername(age, username);
 	}
-	
+
 	public List<Gamer> findGamersWithComplexCriteria(int age, String username) {
-        return gamerRepository.findGamersWithComplexCriteria(age, username);
-    }
+		return gamerRepository.findGamersWithComplexCriteria(age, username);
+	}
+
+	public List<Gamer> findGamersWithCustomCriteria(Integer age, String username, String orderBy, String orderDirection,
+			int page, int size) {
+		int firstResult = page * size;
+		return gamerRepository.findGamersWithCustomCriteria(age, username, orderBy, orderDirection, firstResult, size);
+	}
 }
