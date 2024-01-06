@@ -3,9 +3,17 @@ package com.example.gamerzone.repository;
 
 import com.example.gamerzone.model.Game;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.Query;
 
-@Repository
+import java.util.List;
+
 public interface GameRepository extends JpaRepository<Game, Long> {
-    // Additional custom queries or methods can be added here if needed
+
+    // Named Query: Find games by title
+    @Query(name = "Game.findByTitle")
+    List<Game> findGamesByTitle(String title);
+
+    // Named Query: Find games by genre
+    @Query(name = "Game.findByGenre")
+    List<Game> findGamesByGenre(String genre);
 }

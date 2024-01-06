@@ -38,4 +38,13 @@ public class GameService {
     public void deleteGame(Long id) {
         gameRepository.deleteById(id);
     }
+    
+ // Named query methods
+    public List<Game> findGamesByTitle(String title) {
+        return gameRepository.findGamesByTitle(title);
+    }
+
+    public List<Game> findGamesByGenre(String genre) {
+        return gameRepository.findGamesByGenre(genre);
+    }
 }
