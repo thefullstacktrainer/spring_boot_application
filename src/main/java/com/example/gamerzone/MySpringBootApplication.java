@@ -1,4 +1,3 @@
-// com.example.gamerzone.MySpringBootApplication
 package com.example.gamerzone;
 
 import com.example.gamerzone.model.Gamer;
@@ -9,9 +8,15 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.ehcache.EhCacheCacheManager;
+import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
 
 import java.util.Arrays;
 
+@EnableCaching
 @SpringBootApplication
 public class MySpringBootApplication {
 
@@ -36,5 +41,22 @@ public class MySpringBootApplication {
             // Save games to the database
             gameRepository.saveAll(Arrays.asList(game1, game2));
         };
+    }
+
+    @Configuration
+    static class EhCacheConfiguration {
+
+        @Bean
+        public EhCacheCacheManager cacheManager() {
+            return new EhCacheCacheManager(ehCacheManagerFactory().getObject());
+        }
+
+        @Bean
+        public EhCacheManagerFactoryBean ehCacheManagerFactory() {
+            EhCacheManagerFactoryBean factory = new EhCacheManagerFactoryBean();
+            factory.setConfigLocation(new ClassPathResource("ehcache.xml"));
+            factory.setShared(true);
+            return factory;
+        }
     }
 }

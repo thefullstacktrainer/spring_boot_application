@@ -1,13 +1,17 @@
 // com.example.gamerzone.model.Gamer
 package com.example.gamerzone.model;
 
-
+import org.springframework.cache.annotation.Cacheable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Gamer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

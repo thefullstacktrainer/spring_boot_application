@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import org.springframework.cache.annotation.Cacheable;
 
 @Service
 public class GameService {
@@ -40,6 +41,7 @@ public class GameService {
 	}
 
 	// Named query methods
+	@Cacheable("gamesByTitleCache")
 	public List<Game> findGamesByTitle(String title) {
 		return gameRepository.findGamesByTitle(title);
 	}

@@ -2,8 +2,13 @@
 package com.example.gamerzone.model;
 
 import javax.persistence.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.cache.annotation.Cacheable;
 
 @Entity
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @NamedQueries({
 		@NamedQuery(name = "Game.findByPartialTitle", query = "SELECT g FROM Game g WHERE lower(g.title) LIKE lower(concat('%', :partialTitle, '%'))"),
 		@NamedQuery(name = "Game.findByPartialGenre", query = "SELECT g FROM Game g WHERE lower(g.genre) LIKE lower(concat('%', :partialGenre, '%'))"),

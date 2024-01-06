@@ -1,0 +1,8 @@
+<ehcache>
+    <cache name="gamesByTitleCache"
+           maxEntriesLocalHeap="10000"
+           eternal="false"
+           timeToLiveSeconds="300"
+           timeToIdleSeconds="300"
+           memoryStoreEvictionPolicy="LRU"/>
+</ehcache>
