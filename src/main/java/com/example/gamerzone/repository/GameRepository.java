@@ -16,4 +16,11 @@ public interface GameRepository extends JpaRepository<Game, Long> {
     // Named Query: Find games by genre
     @Query(name = "Game.findByGenre")
     List<Game> findGamesByGenre(String genre);
+    
+    @Query(name = "Game.findByPartialTitle")
+    List<Game> findByTitleContaining(String partialTitle);
+
+    // Named Query: Find games by partial genre using LIKE
+    @Query(name = "Game.findByPartialGenre")
+    List<Game> findByGenreContaining(String partialGenre);
 }

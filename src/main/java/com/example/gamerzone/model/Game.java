@@ -1,79 +1,72 @@
 // com.example.gamerzone.model.Game
 package com.example.gamerzone.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQuery;
+import javax.persistence.*;
 
 @Entity
-@NamedQuery(name = "Game.findAll", query = "SELECT g FROM Game g")
-@NamedQuery(name = "Game.findByTitle", query = "SELECT g FROM Game g WHERE g.title = :title")
-@NamedQuery(name = "Game.findByGenre", query = "SELECT g FROM Game g WHERE g.genre = :genre")
+@NamedQueries({
+		@NamedQuery(name = "Game.findByPartialTitle", query = "SELECT g FROM Game g WHERE lower(g.title) LIKE lower(concat('%', :partialTitle, '%'))"),
+		@NamedQuery(name = "Game.findByPartialGenre", query = "SELECT g FROM Game g WHERE lower(g.genre) LIKE lower(concat('%', :partialGenre, '%'))"),
+		@NamedQuery(name = "Game.findAll", query = "SELECT g FROM Game g"),
+		@NamedQuery(name = "Game.findByTitle", query = "SELECT g FROM Game g WHERE g.title = :title"),
+		@NamedQuery(name = "Game.findByGenre", query = "SELECT g FROM Game g WHERE g.genre = :genre") })
 public class Game {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String title;
+	private String title;
+	private String genre;
+	private int releaseYear;
 
-    private String genre;
+	// Constructors
+	public Game() {
+	}
 
-    private int releaseYear;
+	public Game(Long id, String title, String genre, int releaseYear) {
+		this.id = id;
+		this.title = title;
+		this.genre = genre;
+		this.releaseYear = releaseYear;
+	}
 
-    // Constructors
-    public Game() {
-    }
+	// Getters and setters
+	public Long getId() {
+		return id;
+	}
 
-    public Game(Long id, String title, String genre, int releaseYear) {
-        this.id = id;
-        this.title = title;
-        this.genre = genre;
-        this.releaseYear = releaseYear;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    // Getters and setters
-    public Long getId() {
-        return id;
-    }
+	public String getTitle() {
+		return title;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-    public String getTitle() {
-        return title;
-    }
+	public String getGenre() {
+		return genre;
+	}
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	public void setGenre(String genre) {
+		this.genre = genre;
+	}
 
-    public String getGenre() {
-        return genre;
-    }
+	public int getReleaseYear() {
+		return releaseYear;
+	}
 
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
+	public void setReleaseYear(int releaseYear) {
+		this.releaseYear = releaseYear;
+	}
 
-    public int getReleaseYear() {
-        return releaseYear;
-    }
-
-    public void setReleaseYear(int releaseYear) {
-        this.releaseYear = releaseYear;
-    }
-
-    @Override
-    public String toString() {
-        return "Game{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", genre='" + genre + '\'' +
-                ", releaseYear=" + releaseYear +
-                '}';
-    }
+	@Override
+	public String toString() {
+		return "Game{" + "id=" + id + ", title='" + title + '\'' + ", genre='" + genre + '\'' + ", releaseYear="
+				+ releaseYear + '}';
+	}
 }

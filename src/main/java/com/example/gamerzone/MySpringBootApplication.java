@@ -23,15 +23,15 @@ public class MySpringBootApplication {
     public CommandLineRunner init(GamerRepository gamerRepository, GameRepository gameRepository) {
         return args -> {
             // Sample gamer data
-            Gamer gamer1 = new Gamer(null, "player1", "player1@example.com", 25);
-            Gamer gamer2 = new Gamer(null, "player2", "player2@example.com", 30);
+            Gamer gamer1 = new Gamer(null, "player5", "player5@example.com", 27);
+            Gamer gamer2 = new Gamer(null, "player6", "player6@example.com", 37);
 
             // Save gamers to the database
             gamerRepository.saveAll(Arrays.asList(gamer1, gamer2));
 
             // Sample game data
-            Game game1 = new Game(null, "Game A", "Action", 2022);
-            Game game2 = new Game(null, "Game B", "Adventure", 2023);
+            Game game1 = new Game(null, "Game E", "Action", 2020);
+            Game game2 = new Game(null, "Game F", "Adventure", 2021);
 
             // Save games to the database
             gameRepository.saveAll(Arrays.asList(game1, game2));

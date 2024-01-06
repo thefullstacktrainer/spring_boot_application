@@ -61,4 +61,16 @@ public class GameController {
 		List<Game> games = gameService.findGamesByGenre(genre);
 		return ResponseEntity.ok(games);
 	}
+
+	@GetMapping("/by-partial-title")
+	public ResponseEntity<List<Game>> findByPartialTitle(@RequestParam String title) {
+		List<Game> games = gameService.findByTitleContaining(title);
+		return ResponseEntity.ok(games);
+	}
+
+	@GetMapping("/by-partial-genre")
+	public ResponseEntity<List<Game>> findByPartialGenre(@RequestParam String genre) {
+		List<Game> games = gameService.findByGenreContaining(genre);
+		return ResponseEntity.ok(games);
+	}
 }
