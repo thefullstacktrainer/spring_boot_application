@@ -9,68 +9,75 @@ import javax.persistence.Id;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 @Entity
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Gamer {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String username;
-    private String email;
-    private int age;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    // Constructors
-    public Gamer() {
-    }
+	@NotBlank(message = "Username is required")
+	private String username;
 
-    public Gamer(Long id, String username, String email, int age) {
-        this.id = id;
-        this.username = username;
-        this.email = email;
-        this.age = age;
-    }
+	@Email(message = "Invalid email format")
+	private String email;
 
-    // Getters and setters
-    public Long getId() {
-        return id;
-    }
+	@Min(value = 0, message = "Age must be at least 0")
+	private int age;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	// Constructors
+	public Gamer() {
+	}
 
-    public String getUsername() {
-        return username;
-    }
+	public Gamer(Long id, String username, String email, int age) {
+		this.id = id;
+		this.username = username;
+		this.email = email;
+		this.age = age;
+	}
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+	// Getters and setters
+	public Long getId() {
+		return id;
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	public String getUsername() {
+		return username;
+	}
 
-    public int getAge() {
-        return age;
-    }
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
-    public void setAge(int age) {
-        this.age = age;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    @Override
-    public String toString() {
-        return "Gamer{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", email='" + email + '\'' +
-                ", age=" + age +
-                '}';
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+	@Override
+	public String toString() {
+		return "Gamer{" + "id=" + id + ", username='" + username + '\'' + ", email='" + email + '\'' + ", age=" + age
+				+ '}';
+	}
 }

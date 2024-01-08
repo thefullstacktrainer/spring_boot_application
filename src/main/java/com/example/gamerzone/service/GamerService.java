@@ -1,14 +1,21 @@
 // com.example.gamerzone.service.GamerService
 package com.example.gamerzone.service;
 
-import com.example.gamerzone.model.Gamer;
-import com.example.gamerzone.repository.GamerRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import java.util.List;
-import org.springframework.transaction.annotation.Transactional;
+import java.util.Set;
+
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.validation.ConstraintViolation;
+import javax.validation.ValidationException;
+import javax.validation.Validator;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.example.gamerzone.model.Gamer;
+import com.example.gamerzone.repository.GamerRepository;
 
 @Service
 public class GamerService {
@@ -28,7 +35,26 @@ public class GamerService {
 	}
 
 	public void createGamer(Gamer gamer) {
-		gamerRepository.save(gamer);
+		try {
+			validateGamer(gamer);
+			gamerRepository.save(gamer);
+		} catch (ValidationException ex) {
+			// Handle validation exception
+			throw new IllegalArgumentException(ex.getMessage());
+		}
+	}
+
+	private void validateGamer(Gamer gamer) {
+		Validator validator = javax.validation.Validation.buildDefaultValidatorFactory().getValidator();
+		Set<ConstraintViolation<Gamer>> violations = validator.validate(gamer);
+
+		if (!violations.isEmpty()) {
+			StringBuilder errorMessage = new StringBuilder("Validation error(s): ");
+			for (ConstraintViolation<Gamer> violation : violations) {
+				errorMessage.append(violation.getMessage()).append("; ");
+			}
+			throw new ValidationException(errorMessage.toString());
+		}
 	}
 
 	public void updateGamer(Long id, Gamer updatedGamer) {

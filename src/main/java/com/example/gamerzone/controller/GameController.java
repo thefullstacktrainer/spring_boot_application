@@ -1,16 +1,29 @@
 // com.example.gamerzone.controller.GameController
 package com.example.gamerzone.controller;
 
-import com.example.gamerzone.model.Game;
-import com.example.gamerzone.service.GameService;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import com.example.gamerzone.model.Game;
+import com.example.gamerzone.service.GameService;
 
 @RestController
 @RequestMapping("/api/games")
@@ -37,13 +50,29 @@ public class GameController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Void> createGame(@RequestBody Game game) {
+	public ResponseEntity<String> createGame(@RequestBody @Valid Game game, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			List<String> errorMessages = bindingResult.getAllErrors().stream()
+					.map(error -> String.format("%s: %s", error.getCode(), error.getDefaultMessage()))
+					.collect(Collectors.toList());
+
+			String errorMessage = String.join("; ", errorMessages);
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
+		}
+
 		gameService.createGame(game);
 		return ResponseEntity.ok().build();
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Void> updateGame(@PathVariable Long id, @RequestBody Game updatedGame) {
+	public ResponseEntity<Void> updateGame(@PathVariable Long id, @RequestBody @Valid Game updatedGame,
+			BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			List<String> errorMessages = bindingResult.getAllErrors().stream().map(error -> error.getDefaultMessage())
+					.collect(Collectors.toList());
+			throw new IllegalArgumentException(String.join("; ", errorMessages));
+		}
+
 		gameService.updateGame(id, updatedGame);
 		return ResponseEntity.ok().build();
 	}

@@ -5,6 +5,9 @@ import javax.persistence.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.cache.annotation.Cacheable;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Cacheable
@@ -21,8 +24,14 @@ public class Game {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@NotBlank(message = "Title is required")
 	private String title;
+
+	@NotBlank(message = "Genre is required")
 	private String genre;
+
+	@NotNull(message = "Release year is required")
+	@Min(value = 1000, message = "Invalid release year")
 	private int releaseYear;
 
 	// Constructors

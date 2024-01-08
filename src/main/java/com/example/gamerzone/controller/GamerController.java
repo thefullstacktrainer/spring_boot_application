@@ -1,13 +1,27 @@
 // com.example.gamerzone.controller.GamerController
 package com.example.gamerzone.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.example.gamerzone.model.Gamer;
 import com.example.gamerzone.service.GamerService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/gamers")
@@ -32,7 +46,16 @@ public class GamerController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Void> createGamer(@RequestBody Gamer gamer) {
+	public ResponseEntity<String> createGamer(@RequestBody @Valid Gamer gamer, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			List<String> errorMessages = bindingResult.getAllErrors().stream()
+					.map(error -> String.format("%s: %s", error.getCode(), error.getDefaultMessage()))
+					.collect(Collectors.toList());
+
+			String errorMessage = String.join("; ", errorMessages);
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
+		}
+
 		gamerService.createGamer(gamer);
 		return ResponseEntity.ok().build();
 	}
@@ -119,14 +142,12 @@ public class GamerController {
 	}
 
 	@GetMapping("/custom-criteria")
-    public ResponseEntity<List<Gamer>> findGamersWithCustomCriteria(
-            @RequestParam(required = false) Integer age,
-            @RequestParam(required = false) String username,
-            @RequestParam(defaultValue = "username") String orderBy,
-            @RequestParam(defaultValue = "asc") String orderDirection,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        List<Gamer> gamers = gamerService.findGamersWithCustomCriteria(age, username, orderBy, orderDirection, page, size);
-        return ResponseEntity.ok(gamers);
-    }
+	public ResponseEntity<List<Gamer>> findGamersWithCustomCriteria(@RequestParam(required = false) Integer age,
+			@RequestParam(required = false) String username, @RequestParam(defaultValue = "username") String orderBy,
+			@RequestParam(defaultValue = "asc") String orderDirection, @RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "10") int size) {
+		List<Gamer> gamers = gamerService.findGamersWithCustomCriteria(age, username, orderBy, orderDirection, page,
+				size);
+		return ResponseEntity.ok(gamers);
+	}
 }
