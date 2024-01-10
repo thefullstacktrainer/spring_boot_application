@@ -1,13 +1,22 @@
 // com.example.gamerzone.model.Game
 package com.example.gamerzone.model;
 
-import javax.persistence.*;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.springframework.cache.annotation.Cacheable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.cache.annotation.Cacheable;
 
 @Entity
 @Cacheable
@@ -25,20 +34,29 @@ public class Game {
 	private Long id;
 
 	@NotBlank(message = "Title is required")
+	@Size(min = 1, max = 255, message = "Title must be between 1 and 255 characters")
 	private String title;
 
 	@NotBlank(message = "Genre is required")
+	@Size(min = 1, max = 100, message = "Genre must be between 1 and 100 characters")
 	private String genre;
 
 	@NotNull(message = "Release year is required")
-	@Min(value = 1000, message = "Invalid release year")
-	private int releaseYear;
+	@Min(value = 1000, message = "Release year must be at least 1000")
+	@Max(value = 9999, message = "Release year cannot be more than 9999")
+	private Integer releaseYear;
+
+	// Regular expression for a valid genre
+	private static final String GENRE_PATTERN = "^[a-zA-Z]+(?:-[a-zA-Z]+)*$";
+
+	@Pattern(regexp = GENRE_PATTERN, message = "Invalid genre format. Use letters and hyphens (e.g., Action-Adventure)")
+	private String customGenre;
 
 	// Constructors
 	public Game() {
 	}
 
-	public Game(Long id, String title, String genre, int releaseYear) {
+	public Game(Long id, String title, String genre, Integer releaseYear) {
 		this.id = id;
 		this.title = title;
 		this.genre = genre;
