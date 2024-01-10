@@ -73,18 +73,18 @@ public class GameService {
 	@Cacheable("gamesByTitleCache")
 	public List<Game> findGamesByTitle(String title) {
 		logger.info("Executing findGamesByTitle for title: {}", title);
-		return gameRepository.findGamesByTitle(title);
+		return ((GameService) gameRepository).findGamesByTitle(title);
 	}
 
 	public List<Game> findGamesByGenre(String genre) {
-		return gameRepository.findGamesByGenre(genre);
+		return ((GameService) gameRepository).findGamesByGenre(genre);
 	}
 
 	public List<Game> findByTitleContaining(String partialTitle) {
-		return gameRepository.findByTitleContaining(partialTitle);
+		return ((GameService) gameRepository).findByTitleContaining(partialTitle);
 	}
 
 	public List<Game> findByGenreContaining(String partialGenre) {
-		return gameRepository.findByGenreContaining(partialGenre);
+		return ((GameService) gameRepository).findByGenreContaining(partialGenre);
 	}
 }
